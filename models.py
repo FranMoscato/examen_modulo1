@@ -55,16 +55,16 @@ class Payment:
     """
 
     def pago_fallido(self):
-        self._state.handle1()
+        return self._state.handle1()
 
     def pago_exitoso(self):
-        self._state.handle2()
+        return self._state.handle2()
 
     def revertir(self):
-        self._state.handle3()
+        return self._state.handle3()
 
     def updatear(self,amount: float, method: str):
-        self._state.handle4(amount, method)
+        return self._state.handle4(amount, method)
 
 
 class State(ABC):
@@ -97,9 +97,11 @@ class State(ABC):
 class REGISTRADO(State):
     def handle1(self) -> None: #pago_fallido
         self.context.transition_to(FALLIDO())
+        return 'Pago fallido'
 
     def handle2(self) -> None: #pago_exitoso
         self.context.transition_to(PAGADO())
+        return 'Pago Exitoso'
 
     def handle3(self) -> None: #revertir
         return 'Este pago esta en estado REGISTRADO'
@@ -108,7 +110,7 @@ class REGISTRADO(State):
         self.context.amount=amount
         self.context.payment_method=method
         self.context.transition_to(REGISTRADO())
-        
+        return 'Registro Updateado'
 
 class FALLIDO(State):
     def handle1(self) -> None: #pago_fallido
@@ -119,6 +121,7 @@ class FALLIDO(State):
 
     def handle3(self) -> None: #revertir
         self.context.transition_to(REGISTRADO())
+        return 'Registro revertido con exito'
 
     def handle4(self,amount: float, method: str) -> None: #updatear
         return 'Este pago esta en estado FALLIDO'
