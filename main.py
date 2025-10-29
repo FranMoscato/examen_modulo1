@@ -73,25 +73,31 @@ async def Registra (payment_id: str, amount : float, payment_method : str):
     else:
         return { "Error" : "ID no valido"}
     
-@app.post("/payments/{payment_id}/update")
-async def Registra (payment_id: str, amount : float, payment_method : str):
+
+@app.post("/payments/{payment_id}/pay")
+async def Pay (payment_id: str):
     
     data=load_all_payments()
     if payment_id not in data.keys():
         return { "Error" : "ID no valido"}
-    
     else:
-        #creamos objeto pago en base a data registrada
         ST=data[payment_id]['status']
-        ST_CLASS=to_status_class(ST)
-        pago=Payment(ST_CLASS,payment_id,data[payment_id]["amount"],data[payment_id]["payment_method"])
+        if ST != STATUS_REGISTRADO:
+            return {"Error" : f"El pago se encuentra en estado {ST}"}
+        else:
+            ST_CLASS=to_status_class(ST)
+            
+            pago=Payment(ST_CLASS,payment_id,data[payment_id]["amount"],data[payment_id]["payment_method"])
+            
+            val_strategy=get_validation_strategy(pago.payment_method)
 
-        #intentamos actualizar
-        pago.updatear(amount,payment_method)
-        save_payment(pago.payment_id,pago.amount,pago.payment_method,ST)
-        return {"Output" : 'prueba'}
-
-        
-
+            if val_strategy.validate(payment_id,pago.amount,data):
+                msg=pago.pago_exitoso()
+                save_payment(pago.payment_id,pago.amount,pago.payment_method,pago.status)
+                return {"Exito" : msg}
+            else:
+                msg=pago.pago_fallido()
+                save_payment(pago.payment_id,pago.amount,pago.payment_method,pago.status)
+                return {"Error" : msg}
 
 
