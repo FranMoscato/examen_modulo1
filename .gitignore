@@ -1,0 +1,10 @@
+# Archivos generados por Python
+__pycache__/
+*.pyc
+
+# Archivos de entorno virtual
+.venv/
+venv/
+
+# Archivos generados por el sistema
+.DS_Store

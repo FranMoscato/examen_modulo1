@@ -1,31 +1,64 @@
-from pydantic import BaseModel, Field
-from typing import Dict, Any
+from __future__ import annotations
+from typing import Dict, Any, TYPE_CHECKING
 
-# 1. Definición de Constantes (Acordadas para el Patrón State)
-# Estas constantes serán utilizadas por la lógica de estados y las estrategias.
+from states.states import State
+
+# 1. Definición de Constantes (Contrato de Datos)
 
 STATUS_REGISTRADO = "REGISTRADO"
 STATUS_PAGADO = "PAGADO"
 STATUS_FALLIDO = "FALLIDO"
 
-PAYMENT_METHOD_CC = "Tarjeta de Crédito"
+PAYMENT_METHOD_CC = "Tarjeta de Credito"
 PAYMENT_METHOD_PAYPAL = "PayPal"
 
-# 2. Clase Payment (El Modelo de Datos Central)
-class Payment(BaseModel):
+class Payment:
     """
-    Representa un pago en el sistema.
+    El Contexto (Payment) define la interfaz de interés para los clientes.
+    Mantiene una referencia al objeto de Estado actual.
     """
-    
-    # Configuración para permitir la instanciación por nombre del atributo (necesario para los tests)
-    model_config = {
-        "populate_by_name": True 
-    }
-    
-    # Atributos principales (validación Pydantic)
-    payment_id: str = Field(alias="payment_id")
+
+    _state: State = None
+
+    # Atributos principales
+    payment_id: str
     amount: float
-    payment_method: str = Field(alias="payment_method")
-    
-    # Atributo de Estado (manejado por la lógica de tu compañero)
+    payment_method: str
+
+    # Atributo de Estado en STRING (Para persistencia/API)
     status: str
+
+    def __init__(self, state: State,id: str, amount: float, method: str) -> None:
+        self.payment_id=id
+        self.amount=amount
+        self.payment_method=method
+        self.status=type(state).__name__
+        self.transition_to(state)
+
+    def transition_to(self, state: State):
+        """
+        El Contexto permite cambiar el objeto de Estado en tiempo de ejecución.
+        """
+        self._state = state
+        self._state.context = self
+        # Actualiza el status en string (ej. "REGISTRADO")
+        self.status = type(state).__name__
+
+    # --- Métodos que delegan el comportamiento al objeto de estado actual ---
+    # Los métodos públicos del Contexto llaman al método abstracto del Estado.
+
+    def pago_fallido(self) -> str:
+        # handle1 en el estado
+        return self._state.handle1()
+
+    def pago_exitoso(self) -> str:
+        # handle2 en el estado
+        return self._state.handle2()
+
+    def revertir(self) -> str:
+        # handle3 en el estado
+        return self._state.handle3()
+
+    def updatear(self, amount: float, method: str) -> str:
+        # handle4 en el estado
+        return self._state.handle4(amount, method)
