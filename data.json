@@ -1,0 +1,32 @@
+{
+    "1": {
+        "amount": 100,
+        "payment_method": "PayPal",
+        "status": "PAGADO"
+    },
+    "2": {
+        "amount": 10000.0,
+        "payment_method": "PayPal",
+        "status": "REGISTRADO"
+    },
+    "3": {
+        "amount": 10000.0,
+        "payment_method": "PayPal",
+        "status": "REGISTRADO"
+    },
+    "4": {
+        "amount": 4999.0,
+        "payment_method": "PayPal",
+        "status": "PAGADO"
+    },
+    "5": {
+        "amount": 10001.0,
+        "payment_method": "Tarjeta de Credito",
+        "status": "FALLIDO"
+    },
+    "6": {
+        "amount": 100.0,
+        "payment_method": "Tarjeta de Credito",
+        "status": "FALLIDO"
+    }
+}

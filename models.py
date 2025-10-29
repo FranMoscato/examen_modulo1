@@ -11,7 +11,7 @@ STATUS_REGISTRADO = "REGISTRADO"
 STATUS_PAGADO = "PAGADO"
 STATUS_FALLIDO = "FALLIDO"
 
-PAYMENT_METHOD_CC = "Tarjeta de Crédito"
+PAYMENT_METHOD_CC = "Tarjeta de Credito"
 PAYMENT_METHOD_PAYPAL = "PayPal"
 
 
@@ -104,7 +104,7 @@ class REGISTRADO(State):
         return 'Pago Exitoso'
 
     def handle3(self) -> None: #revertir
-        return 'Este pago esta en estado REGISTRADO'
+        return 'Este pago ya esta en estado REGISTRADO'
 
     def handle4(self,amount: float, method: str) -> None: #updatear
         self.context.amount=amount
@@ -114,30 +114,30 @@ class REGISTRADO(State):
 
 class FALLIDO(State):
     def handle1(self) -> None: #pago_fallido
-        return 'Este pago esta en estado FALLIDO'
+        return 'Este pago ya esta en estado FALLIDO'
 
     def handle2(self) -> None: #pago_exitoso
-        return 'Este pago esta en estado FALLIDO'
+        return 'Este pago ya esta en estado FALLIDO'
 
     def handle3(self) -> None: #revertir
         self.context.transition_to(REGISTRADO())
         return 'Registro revertido con exito'
 
     def handle4(self,amount: float, method: str) -> None: #updatear
-        return 'Este pago esta en estado FALLIDO'
+        return 'Este pago ya esta en estado FALLIDO'
 
 class PAGADO(State):
     def handle1(self) -> None: #pago_fallido
-        return 'Este pago esta en estado PAGADO'
+        return 'Este pago ya esta en estado PAGADO'
 
     def handle2(self) -> None: #pago_exitoso
-        return 'Este pago esta en estado PAGADO'
+        return 'Este pago ya esta en estado PAGADO'
 
     def handle3(self) -> None: #revertir
-        return 'Este pago esta en estado PAGADO'
+        return 'Este pago ya esta en estado PAGADO'
 
     def handle4(self,amount: float, method: str) -> None: #updatear
-        return 'Este pago esta en estado PAGADO'
+        return 'Este pago ya esta en estado PAGADO'
 
 
 if __name__ == "__main__":
