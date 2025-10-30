@@ -1,0 +1,28 @@
+name: CI - Validacion de Pull Request
+
+on:
+  # Se dispara en cada PR o push a main
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  run-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+        
+    - name: Install dependencies (FastAPI, Uvicorn, etc.)
+      # Instala las dependencias necesarias para que los tests corran (ej. Pydantic)
+      run: pip install -r requirements.txt
+        
+    - name: Run unit tests
+      # Ejecuta todos los tests en la carpeta tests/
+      run: python -m unittest discover tests
