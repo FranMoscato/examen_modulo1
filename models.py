@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Dict, Any, TYPE_CHECKING
-
+from pydantic import BaseModel, Field
 from states.states import State
 
 # 1. Definición de Constantes (Contrato de Datos)
@@ -11,6 +11,19 @@ STATUS_FALLIDO = "FALLIDO"
 
 PAYMENT_METHOD_CC = "Tarjeta de Credito"
 PAYMENT_METHOD_PAYPAL = "PayPal"
+
+class PaymentData(BaseModel):
+    """
+    Este es el Modelo de DATOS (Pydantic) que usará FastAPI
+    para validar la API y representar la estructura de data.json.
+    """
+    model_config = {
+        "populate_by_name": True 
+    }
+    
+    amount: float
+    payment_method: str
+    status: str
 
 class Payment:
     """
