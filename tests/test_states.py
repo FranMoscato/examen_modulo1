@@ -1,19 +1,23 @@
 import unittest
+# Importar la clase Payment (Contexto) y Constantes
 from models import (
-    Payment,
-    REGISTRADO,
-    FALLIDO,
-    PAGADO,
     PAYMENT_METHOD_CC,
     PAYMENT_METHOD_PAYPAL
 )
-
+# Importar las Clases de Estado desde el módulo 'states'
+from states.states import (
+    Payment,
+    REGISTRADO,
+    FALLIDO,
+    PAGADO
+)
 
 class TestPaymentState(unittest.TestCase):
 
     def setUp(self):
         """Se ejecuta antes de cada test."""
-        self.pago = Payment(REGISTRADO(), 1, 1000, PAYMENT_METHOD_CC)
+        # Aseguramos que el ID sea string "1"
+        self.pago = Payment(REGISTRADO(), "1", 1000, PAYMENT_METHOD_CC)
         self.assertEqual(self.pago.status, "REGISTRADO")
 
     # --- REGISTRADO ---
