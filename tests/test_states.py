@@ -1,12 +1,12 @@
 import unittest
 # Importar la clase Payment (Contexto) y Constantes
 from models import (
-    Payment,
     PAYMENT_METHOD_CC,
     PAYMENT_METHOD_PAYPAL
 )
 # Importar las Clases de Estado desde el módulo 'states'
 from states.states import (
+    Payment,
     REGISTRADO,
     FALLIDO,
     PAGADO

@@ -3,8 +3,8 @@ from typing import Annotated
 import os
 import shutil
 import json
-from models import Payment, STATUS_REGISTRADO, STATUS_PAGADO, STATUS_FALLIDO
-from states.states import REGISTRADO, FALLIDO, PAGADO
+from models import STATUS_REGISTRADO, STATUS_PAGADO, STATUS_FALLIDO
+from states.states import Payment, REGISTRADO, FALLIDO, PAGADO
 from strategies.validation_strategy import get_validation_strategy
 
 DATA_PATH = "data.json"

@@ -8,3 +8,7 @@ venv/
 
 # Archivos generados por el sistema
 .DS_Store
+
+# Archivo data.json con pagos de prueba
+
+data.json
