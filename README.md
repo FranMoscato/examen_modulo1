@@ -59,6 +59,8 @@ Para trabajar en el proyecto, decidimos separar la lógica en módulos independi
 
 * **Patrón State:** Se encuentra en `states/states.py` para controlar el ciclo de vida del pago (`REGISTRADO`, `PAGADO`, `FALLIDO`).
     * **¿Por qué?** El objeto `Payment` cambia su comportamiento según el estado. Por ejemplo, la acción `updatear` solo funciona si el estado es `REGISTRADO`. Esto evita tener un montón de `if/else` en `main.py`. Además, como el flujo de transición de estados no depende del medio de pago, tiene sentido trabajarlo en este módulo independiente.
+ 
+**Nota:** Para el desarrollo del codigo nos basamos en los ejemplos provistos en el siguiente enlace: https://refactoring.guru/design-patterns/
 
 ### 2. Tests
 
@@ -86,6 +88,10 @@ El flujo que sigue el Patrón State es:
 ### 5. Otros comentarios sobre el proceso y desarrollo del trabajo
 
 Esta sección cubre otros puntos relevantes de nuestro proceso de trabajo, las decisiones que tomamos y los problemas que fuimos resolviendo.
+
+#### Implementación de CD
+
+Al momento de configurar el servicio web en Render, una vez seleccionado el repositorio, elegimos la rama 'production' para construir y desplegar nuestra API. De esta manera, nos aseguramos de que, cuando se actualice dicha rama mediante un push, la API también se actualice automáticamente, tal como indica la consigna.
 
 #### Decisiones de Arquitectura y "Refactorización"
 
